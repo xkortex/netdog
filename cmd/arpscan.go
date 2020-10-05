@@ -27,12 +27,12 @@ var ArpScanCmd = &cobra.Command{
 		vprint.Println(args)
 		all, _ := cmd.PersistentFlags().GetBool("all")
 
-		timeout, _ := cmd.Flags().GetFloat64("timeout")
+		timeout, _ := cmd.Flags().GetDuration("timeout")
 		delay, _ := cmd.Flags().GetFloat64("delay")
 		vprint.Println("Timeout: ", timeout)
 		vprint.Println("Delay: ", delay)
 		if all {
-			arpResults, err := netdog.ScanAllInterfaces(timeout, delay)
+			arpResults, err := netdog.ScanAllInterfaces(timeout.Seconds(), delay)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -44,7 +44,7 @@ var ArpScanCmd = &cobra.Command{
 		}
 		interfaceName := args[0]
 
-		arpResults, err := netdog.ScanInterface(interfaceName, timeout, delay)
+		arpResults, err := netdog.ScanInterface(interfaceName, timeout.Seconds(), delay)
 		if err != nil {
 			log.Fatal(err)
 		}

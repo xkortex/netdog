@@ -216,8 +216,8 @@ func ReadInterface(handle *pcap.Handle, iface *net.Interface, stop chan struct{}
 			// all information is good information :)
 			//log.Printf("IP %v is at %v", net.IP(arp.SourceProtAddress), net.HardwareAddr(arp.SourceHwAddress))
 			log.WithFields(log.Fields{
-				"ip":  net.IP(arp.SourceProtAddress),
-				"mac": fmt.Sprintf("%v", net.HardwareAddr(arp.SourceHwAddress)),
+				"ip":    net.IP(arp.SourceProtAddress),
+				"mac":   fmt.Sprintf("%v", net.HardwareAddr(arp.SourceHwAddress)),
 				"iface": iface.Name,
 			}).Info()
 		}
@@ -250,8 +250,8 @@ func readARP(handle *pcap.Handle, iface *net.Interface, stop chan struct{}) {
 			// all information is good information :)
 			//log.Printf("IP %v is at %v", net.IP(arp.SourceProtAddress), net.HardwareAddr(arp.SourceHwAddress))
 			log.WithFields(log.Fields{
-				"ip":  net.IP(arp.SourceProtAddress),
-				"mac": fmt.Sprintf("%v", net.HardwareAddr(arp.SourceHwAddress)),
+				"ip":    net.IP(arp.SourceProtAddress),
+				"mac":   fmt.Sprintf("%v", net.HardwareAddr(arp.SourceHwAddress)),
 				"iface": iface.Name,
 			}).Info()
 		}

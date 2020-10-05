@@ -21,22 +21,22 @@ var DigCmd = &cobra.Command{
 		vprint.Printf("root called")
 		vprint.Println(args)
 		host := args[0]
-		timeout, _ := cmd.Flags().GetFloat64("timeout")
+		timeout, _ := cmd.Flags().GetDuration("timeout")
 		vprint.Println(timeout)
 		//if err := cmd.Usage(); err != nil {
 		//	log.Fatalf("Error executing root command: %v", err)
 		//}
 		//log.Fatal("<dbg> silence/usage: ", cmd.SilenceErrors, cmd.SilenceUsage)
 		start := time.Now()
-		addrs, err := netdog.TimeoutLookupHost(host, timeout)
+		addrs, err := netdog.TimeoutLookupHost(host, timeout.Seconds())
 
 		if err != nil {
 			log.Fatal(err)
 		}
 		log.WithFields(log.Fields{
-			"addrs": addrs,
-			"host": host,
-			"elapsed": time.Since(start).Seconds(),},
+			"addrs":   addrs,
+			"host":    host,
+			"elapsed": time.Since(start).Seconds()},
 		).Info()
 	},
 }

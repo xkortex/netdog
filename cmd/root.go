@@ -2,12 +2,12 @@ package cmd
 
 import (
 	"github.com/Wessie/appdirs"
-	"github.com/spf13/cobra"
-	"github.com/xkortex/netdog/netdog"
-	"github.com/xkortex/vprint"
 	log "github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
+	"github.com/xkortex/vprint"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 var (
@@ -15,6 +15,7 @@ var (
 	developer     string
 	defaultCfgDir string
 )
+
 const defaultCfgName = "netdog.yml"
 
 var RootCmd = &cobra.Command{
@@ -28,22 +29,8 @@ var RootCmd = &cobra.Command{
 
 		vprint.Printf("root called")
 		vprint.Print(args)
-		host := args[0]
-		ns, _ := cmd.PersistentFlags().GetString("namespace")
-		timeout, _ := cmd.PersistentFlags().GetFloat64("timeout")
-		vprint.Printf(ns)
-		//if err := cmd.Usage(); err != nil {
-		//	log.Fatalf("Error executing root command: %v", err)
-		//}
-		//log.Fatal("<dbg> silence/usage: ", cmd.SilenceErrors, cmd.SilenceUsage)
-		addrs, err := netdog.TimeoutLookupHost(host, timeout)
-
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.WithFields(log.Fields{
-			"addrs": addrs,
-			"host": host}).Info()
+		_ = cmd.Help()
+		os.Exit(0)
 	},
 }
 
@@ -66,15 +53,16 @@ func init() {
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// RootCmd.PersistentFlags().String("foo", "", "A help for foo")
-	RootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c",
+	RootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "C",
 		defaultCfgFile,
-		"config file, based in UserConfigDir", )
+		"config file, based in UserConfigDir")
 
-	RootCmd.PersistentFlags().Float64P("timeout", "t", 0.1, "Timeout in seconds")
+	RootCmd.PersistentFlags().DurationP("timeout", "t", time.Duration(1e9), "Timeout in seconds")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	RootCmd.PersistentFlags().BoolP("silent", "s", false, "Suppress errors")
+	RootCmd.PersistentFlags().BoolP("quiet", "q", false, "Only print essential")
 	RootCmd.PersistentFlags().BoolP("stdin", "-", false, "Read from standard in")
 	RootCmd.Flags().BoolP("verbose", "v", false, "Verbose tracing (in progress)")
 	RootCmd.PersistentFlags().StringVar(&developer, "developer", "Unknown Developer!", "Developer name.")
