@@ -2,7 +2,7 @@ VERSION := $(shell git describe --always --dirty --tags)
 
 .PHONY: default get test all vet
 
-default: get
+default:
 	go build -i -ldflags="-X 'main.Version=${VERSION}'" -o ${GOPATH}/bin/netdog
 
 
